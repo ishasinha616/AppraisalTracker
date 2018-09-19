@@ -198,6 +198,8 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Authentication\Index.cshtml" />
     <Content Include="Views\Authentication\KuchBHiLIkhDE.cshtml" />
+    <Content Include="Views\Authentication\TempIndex.cshtml" />
+    <Content Include="Views\Authentication\TempKRA.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

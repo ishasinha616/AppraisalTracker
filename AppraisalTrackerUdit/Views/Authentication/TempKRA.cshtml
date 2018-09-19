@@ -1,0 +1,37 @@
+﻿@model AppraisalTrackerUdit.Models.KRADetails
+@{
+    ViewBag.Title = "TempKRA";
+}
+
+<h2>Hello @Session["User Name"]</h2>
+
+<html>
+    <body>
+        <div>
+
+            @using (Html.BeginForm())
+            {
+                <table>
+                    @*<tr>
+                        <td>Employee Id </td>                       
+                        <td>@Html.DisplayFor(x=>x.EmpId)</td>
+                    </tr>*@
+                    <tr>
+                        <td>Primary Skill</td>
+                        <td>@Html.EditorFor(m => m.Skills)</td>
+                    </tr>
+                    <tr>
+                        <td>Starting Date</td>
+                        <td>@Html.EditorFor(m => m.StartingDate)</td>
+                    </tr>
+                    <tr>
+                        <td>End Date</td>
+                        <td>@Html.EditorFor(m => m.EndDate)</td>
+                    </tr>
+                </table>
+                <input type="submit" value="Create" class="btn btn-default" />
+            }
+
+        </div>
+    </body>
+</html>

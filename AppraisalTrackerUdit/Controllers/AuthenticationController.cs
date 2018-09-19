@@ -9,9 +9,9 @@ namespace AppraisalTrackerUdit.Controllers
 {
     public class AuthenticationController : Controller
     {
-        EmployeeContext db = new EmployeeContext();
+        
         AuthenticationRepo repo = new AuthenticationRepo();
-
+        string empName;
         //// GET: Authentication
         [HttpGet]
         //[AllowAnonymous]
@@ -22,25 +22,96 @@ namespace AppraisalTrackerUdit.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(FormCollection collection)
+        public ActionResult Index(Authentication auth)
         {
-            Authentication auth = new Authentication();
-            string userName = collection["uname"];
-            string password= collection["psw"];
-
-            foreach (var item in db.Authentications)
+            using (EmployeeContext db = new EmployeeContext())
             {
-                if (item.UserName.Equals(userName))
+                var query = db.Authentications.SingleOrDefault(u=>u.UserName==auth.UserName && u.Password==auth.Password);
+                if (query !=null)
                 {
-                    if (item.Password.Equals(password))
-                    {
-                       return View("KuchBHiLIkhDE");
-                    }
+                    return RedirectToAction("KuchBHiLIkhDE");
                 }
-                
+                else
+                {
+                    ModelState.AddModelError("","User name or Password is wrong");
+                }
             }
-            return RedirectToAction("Index");
+            return View();
+
         }
+
+        public ActionResult TempIndex()
+        {
+            //List<Authentication> authList = repo.ShowEmployees();
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult TempIndex(Authentication auth)
+        {
+            using (EmployeeContext db = new EmployeeContext())
+            {
+                var query = db.Authentications.SingleOrDefault(u => u.UserName == auth.UserName && u.Password == auth.Password);
+                if (query != null)
+                {
+                     var q1 = db.Employees.Where(x => x.EmpId == query.Employees.EmpId);
+                    // employeeId = Convert.ToInt32(q1.ToList().Select(x => x.EmpId));
+                    //ViewBag.eid = employeeId;
+                    //Session["Emp Id"] = query.Employees.EmpId.ToString();
+                    Session["User Name"] = query.UserName.ToString();
+                    //return RedirectToAction("KuchBHiLIkhDE");
+
+                    
+
+                    return RedirectToAction("TempKRA");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "User name or Password is wrong");
+                }
+            }
+            return View();
+
+        }
+
+        [HttpGet]
+        public ActionResult TempKRA()
+        {
+            //KRADetails kra = new KRADetails();
+            //kra.Employees.EmpName = empName;
+            ////kra.EmpId = employeeId;
+            //return View(kra);
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult TempKRA(KRADetails kra)
+        {
+
+            return View();
+        }
+
+
+        //[HttpPost]
+        //public ActionResult Index(FormCollection collection)
+        //{
+        //    Authentication auth = new Authentication();
+        //    string userName = collection["uname"];
+        //    string password= collection["psw"];
+
+        //    foreach (var item in db.Authentications)
+        //    {
+        //        if (item.UserName.Equals(userName))
+        //        {
+        //            if (item.Password.Equals(password))
+        //            {
+        //               return View("KuchBHiLIkhDE");
+        //            }
+        //        }
+
+        //    }
+        //    return RedirectToAction("Index");
+        //}
 
         public ActionResult KuchBHiLIkhDE()
         {
