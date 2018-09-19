@@ -14,25 +14,36 @@ namespace AppraisalTrackerUdit.Controllers
 
         //// GET: Authentication
         [HttpGet]
-        [AllowAnonymous]
-        public ActionResult Index(string returnUrl)
+        //[AllowAnonymous]
+        public ActionResult Index()
         {
-            List<Authentication> authList = repo.ShowEmployees();
-            return View(authList);
+            //List<Authentication> authList = repo.ShowEmployees();
+            return View();
         }
+
         [HttpPost]
         public ActionResult Index(FormCollection collection)
         {
             Authentication auth = new Authentication();
             string userName = collection["uname"];
+            string password= collection["psw"];
 
-            //foreach (var item in auth)
-            //{
+            foreach (var item in db.Authentications)
+            {
+                if (item.UserName.Equals(userName))
+                {
+                    if (item.Password.Equals(password))
+                    {
+                       return View("KuchBHiLIkhDE");
+                    }
+                }
+                
+            }
+            return RedirectToAction("Index");
+        }
 
-            //}
-            
-
-
+        public ActionResult KuchBHiLIkhDE()
+        {
             return View();
         }
     }
